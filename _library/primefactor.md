@@ -8,4 +8,4 @@ tags: 数学
 
 ## 説明
 $\sqrt{N}$までの素数を列挙し、順に割れるかどうか判定する。$O(\sqrt{N})$
-{% include a.html code="primefactor.cpp" %}
+{% include a.html code="primefactor_ll.cpp" %}
