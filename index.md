@@ -1,4 +1,4 @@
-ア
+イ
 
 {% assign mydocs = site.library | group_by: 'category' %}
 {% for i in mydocs %}
