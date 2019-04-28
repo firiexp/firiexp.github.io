@@ -9,4 +9,4 @@ tags: 最大流
 ## 説明
 Dinicによる最大流
 
-{% include read.html code="dinic.cpp" %}
+{% include a.html code="dinic.cpp" %}
