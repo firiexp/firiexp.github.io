@@ -1,2 +1,2 @@
 # library
-[a](https://firiexp.github.io/)
+[a](https://firiexp.github.io/library/)
