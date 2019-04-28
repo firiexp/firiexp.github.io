@@ -17,3 +17,7 @@ github_username:  firiexp
 
 # Build settings
 markdown: kramdown
+
+collections:
+  library:
+    output: true
