@@ -7,6 +7,5 @@ tags: 最大流
 ---
 
 ## 説明
-Dinicによる最大流
-
+Dinicによる最大流。$x$
 {% include a.html code="dinic.cpp" %}
