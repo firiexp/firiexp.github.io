@@ -7,12 +7,12 @@
 
 # Site settings
 title: library
-email: your-email@domain.com
+email: 
 description: > # this means to ignore newlines until "baseurl:"
-  a
+  under construction
 baseurl: "/library" # the subpath of your site, e.g. /blog
 url: "https://firiexp.github.io" # the base hostname & protocol for your site
-twitter_username: firiexp
+twitter_username: m_idiri
 github_username:  firiexp
 
 # Build settings
