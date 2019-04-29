@@ -1,4 +1,4 @@
-イ
+<a href='/users/firiexp' color="#0000FF"><span class='user-blue'>firiexp</span></a> のライブラリです。
 
 {% assign mydocs = site.library | group_by: 'category' %}
 {% for i in mydocs %}
