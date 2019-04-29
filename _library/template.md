@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 最近共通祖先(LCA)
+title: テンプレート
 date: 2018-04-29
-category: グラフ
-tags: グラフ
+category: テンプレート
+tags: テンプレート
 ---
 
 ## 説明
-ライブラリにしたら遅くなってしまった。
-{% include a.html code="LCA.cpp" %}
+テンプレート
+{% include a.html code="template.cpp" %}
