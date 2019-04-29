@@ -1,5 +1,9 @@
-<a href='/users/firiexp' color="#0000FF"><span class='user-blue'>firiexp</span></a> のライブラリです。
-
+firiのライブラリです。
+<style>
+ul li p {
+    margin.bottom: 0.25em;
+}
+</style>
 {% assign mydocs = site.library | group_by: 'category' %}
 {% for i in mydocs %}
 ## {{ i.name }}
