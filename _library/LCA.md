@@ -8,4 +8,4 @@ tags: グラフ
 
 ## 説明
 ライブラリにしたら遅くなってしまった。
-{% include a.html code="lca.cpp" %}
+{% include a.html code="LCA.cpp" %}
