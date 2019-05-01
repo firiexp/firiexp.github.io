@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 遅延伝搬SegmentTree
-date: 2018-04-29
+date: 2018-05-01
 category: データ構造
 tags: データ構造
 ---
