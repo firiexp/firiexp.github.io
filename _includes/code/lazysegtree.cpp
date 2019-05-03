@@ -50,10 +50,6 @@ struct LazySegmentTree{
         }
         return M::f(ll, rr);
     }
-
-    T operator[](const int &k) const { // 0-indexed
-        return seg[k + sz];
-    }
 };
 
 struct Monoid{
