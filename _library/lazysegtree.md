@@ -17,20 +17,16 @@ tags: データ構造
 - $f(T, T) \rightarrow T$ 要素同士のマージ
 - $g(T, L) \rightarrow T$ 要素と作用素のマージ
 - $h(L, L) \rightarrow L$ 作用素同士のマージ
-以下にモノイドの例をあげる。
-### 区間加算-区間min
+
+以下にモノイドの例をあげておく。
+#### 区間加算-区間min
 - $e = \infty$
 - $l = 0$
 - $f(x, y) = min(x, y), g(x, y) = x + y, h(x, y) = x + y$
-### 区間更新-区間max
+#### 区間更新-区間max
 - $e = 0$
 - $l = 0$
-- f(x, y) = max(x, y)
-- g(x, y) = h(x, y) = \left{
-    \begin{array}{||}
-    a & (b = e) \\
-    b & (b \neq e)
-    \end{array} \right.
-}
+- $f(x, y) = max(x, y)$
+- $g(x, y) = h(x, y) = \left{ \begin{array}{||} a & (b = e) \\ b & (b \neq e) \end{array} \right.$}$
 
 {% include a.html code="lazysegtree.cpp" %}
