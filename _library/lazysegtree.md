@@ -23,11 +23,13 @@ tags: データ構造
 - $e = \infty$
 - $l = 0$
 - $f(x, y) = min(x, y), g(x, y) = x + y, h(x, y) = x + y$
+
 #### 区間更新-区間max
 - $e = 0$
 - $l = 0$
 - $f(x, y) = max(x, y)$
-$ \displaystyle g(x, y) = h(x, y) = a ( b = e ),  b ( b \neq e )
+- $ \displaystyle g(x, y) = h(x, y) = a ( b = e ),  b ( b \neq e )
 $
+
 
 {% include a.html code="lazysegtree.cpp" %}
