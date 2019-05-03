@@ -27,6 +27,8 @@ tags: データ構造
 - $e = 0$
 - $l = 0$
 - $f(x, y) = max(x, y)$
-- $\begin{eqnarray}g(x, y) = h(x, y) =  \begin{cases}    a & ( b = e ) \\    b & ( b \neq e )  \end{cases}\end{eqnarray}$
+- \[
+    \begin{eqnarray}g(x, y) = h(x, y) =  \begin{cases}    a & ( b = e ) \\    b & ( b \neq e )  \end{cases}\end{eqnarray}
+\]
 
 {% include a.html code="lazysegtree.cpp" %}
