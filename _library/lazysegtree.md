@@ -31,5 +31,13 @@ tags: データ構造
 - $ \displaystyle g(x, y) = h(x, y) = a ( b = e ),  b ( b \neq e )
 $
 
+#### 区間更新-区間sum
+要素を(部分木の和, サイズ)としてもつ。範囲内は事前にサイズ1としておく。
+- $e = (0, 0)$　
+- $l = 0$
+- $ f((x_1, y_1), (x_2, y_2)) = (x_1+x_2, y_1+y_2)$
+- $ g((x, y), z) = (zy, y)$
+- $ h(x, y) = a ( b = e ),  b ( b \neq e )$
+
 
 {% include a.html code="lazysegtree.cpp" %}
