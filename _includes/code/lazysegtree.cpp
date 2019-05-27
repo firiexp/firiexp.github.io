@@ -5,18 +5,17 @@ struct LazySegmentTree{
     int sz, height{};
     vector<T> seg; vector<L> lazy;
     explicit LazySegmentTree(int n) {
-        sz = 1;
-        while(sz < n) sz <<= 1, height++;
+        sz = 1; while(sz < n) sz <<= 1, height++;
         seg.assign(2*sz, M::e());
         lazy.assign(2*sz, M::l());
     }
 
-    void set(int k, const T &x){
-        seg[k + sz] = x;
+    void set(int k, const T &x){ 
+        seg[k + sz] = x; 
     }
 
     void build(){
-        for (int i = sz-1; i > 0; --i) seg[i] = M::f(seg[2*i], seg[2*i+1]);
+        for (int i = sz-1; i > 0; --i) seg[i] = M::f(seg[i<<1], seg[(i<<1)|1]);
     }
 
     T reflect(int k){ return lazy[k] == M::l() ? seg[k] : M::g(seg[k], lazy[k]); }
