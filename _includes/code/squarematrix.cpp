@@ -11,7 +11,7 @@ struct SquareMatrix {
         }
         return X;
     }
- 
+
     inline const ar &operator[](int k) const{ return (A.at(k)); }
     inline ar &operator[](int k) { return (A.at(k)); }
     SquareMatrix &operator+= (const SquareMatrix &B){
@@ -22,7 +22,7 @@ struct SquareMatrix {
         }
         return (*this);
     }
- 
+
     SquareMatrix &operator-= (const SquareMatrix &B){
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
@@ -31,7 +31,7 @@ struct SquareMatrix {
         }
         return (*this);
     }
- 
+
     SquareMatrix &operator*=(const SquareMatrix &B) {
         SquareMatrix C;
         for (int i = 0; i < SIZE; ++i) {
@@ -44,7 +44,7 @@ struct SquareMatrix {
         A.swap(C.A);
         return (*this);
     }
- 
+
     SquareMatrix pow(ll n) const {
         SquareMatrix a = (*this), res = I(T(1));
         while(n > 0){
@@ -58,4 +58,3 @@ struct SquareMatrix {
     SquareMatrix operator-(const SquareMatrix &B) const {return SquareMatrix(*this) -= B;}
     SquareMatrix operator*(const SquareMatrix &B) const {return SquareMatrix(*this) *= B;}
 };
- 

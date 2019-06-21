@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 行列
-date: 2018-04-28
+date: 2019-06-21
 category: データ構造
 tags: データ構造
 ---

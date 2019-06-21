@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 正方行列
-date: 2018-04-29
+date: 2019-06-21
 category: データ構造
 tags: データ構造
 ---

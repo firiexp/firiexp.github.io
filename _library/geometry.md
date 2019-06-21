@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 幾何ライブラリ(未完成)
-date: 2018-04-28
+date: 2018-06-21
 category: 幾何
 tags: 幾何
 ---
