@@ -1,0 +1,29 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{template} \PYG{o}{\PYGZlt{}}\PYG{k}{typename} \PYG{n}{T}\PYG{o}{\PYGZgt{}}
+\PYG{k}{struct} \PYG{n}{edge} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{from}\PYG{p}{,} \PYG{n}{to}\PYG{p}{;} \PYG{n}{T} \PYG{n}{cost}\PYG{p}{;}
+    \PYG{n}{edge}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{to}\PYG{p}{,} \PYG{n}{T} \PYG{n}{cost}\PYG{p}{)} \PYG{o}{:} \PYG{n}{from}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{),} \PYG{n}{to}\PYG{p}{(}\PYG{n}{to}\PYG{p}{),} \PYG{n}{cost}\PYG{p}{(}\PYG{n}{cost}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+    \PYG{n}{edge}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{from}\PYG{p}{,} \PYG{k+kt}{int} \PYG{n}{to}\PYG{p}{,} \PYG{n}{T} \PYG{n}{cost}\PYG{p}{)} \PYG{o}{:} \PYG{n}{from}\PYG{p}{(}\PYG{n}{from}\PYG{p}{),} \PYG{n}{to}\PYG{p}{(}\PYG{n}{to}\PYG{p}{),} \PYG{n}{cost}\PYG{p}{(}\PYG{n}{cost}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+
+\PYG{k}{template} \PYG{o}{\PYGZlt{}}\PYG{k}{typename} \PYG{n}{T}\PYG{o}{\PYGZgt{}}
+\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}} \PYG{n}{dijkstra}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{s}\PYG{p}{,}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{edge}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZgt{}\PYGZgt{}} \PYG{o}{\PYGZam{}}\PYG{n}{G}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{size\PYGZus{}t} \PYG{n}{n}\PYG{o}{=}\PYG{n}{G}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}} \PYG{n}{d}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,} \PYG{n}{INF}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{p}{);}
+    \PYG{n}{priority\PYGZus{}queue}\PYG{o}{\PYGZlt{}}\PYG{n}{pair}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{p}{,} \PYG{k+kt}{int}\PYG{o}{\PYGZgt{}}\PYG{p}{,}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{pair}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{p}{,} \PYG{k+kt}{int}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{p}{,}\PYG{n}{greater}\PYG{o}{\PYGZlt{}\PYGZgt{}\PYGZgt{}} \PYG{n}{Q}\PYG{p}{;}
+    \PYG{n}{d}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{Q}\PYG{p}{.}\PYG{n}{emplace}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{s}\PYG{p}{);}
+    \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{Q}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{())\PYGZob{}}
+        \PYG{n}{T} \PYG{n}{cost}\PYG{p}{;} \PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{;}
+        \PYG{n}{tie}\PYG{p}{(}\PYG{n}{cost}\PYG{p}{,} \PYG{n}{i}\PYG{p}{)} \PYG{o}{=} \PYG{n}{Q}\PYG{p}{.}\PYG{n}{top}\PYG{p}{();} \PYG{n}{Q}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{d}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{n}{cost}\PYG{p}{)} \PYG{k}{continue}\PYG{p}{;}
+        \PYG{k}{for} \PYG{p}{(}\PYG{k}{auto} \PYG{o}{\PYGZam{}\PYGZam{}}\PYG{n+nl}{e} \PYG{p}{:} \PYG{n}{G}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+            \PYG{k}{auto} \PYG{n}{cost2} \PYG{o}{=} \PYG{n}{cost} \PYG{o}{+} \PYG{n}{e}\PYG{p}{.}\PYG{n}{cost}\PYG{p}{;}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{d}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{]} \PYG{o}{\PYGZlt{}=} \PYG{n}{cost2}\PYG{p}{)} \PYG{k}{continue}\PYG{p}{;}
+            \PYG{n}{d}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{]} \PYG{o}{=} \PYG{n}{cost2}\PYG{p}{;}
+            \PYG{n}{Q}\PYG{p}{.}\PYG{n}{emplace}\PYG{p}{(}\PYG{n}{d}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{],} \PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{d}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

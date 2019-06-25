@@ -32,7 +32,7 @@ static constexpr int ON_SEGMENT = 0;
 int ccw(Point a, Point b, Point c){
     b -= a; c -= a;
     if(cross(b, c) > EPS) return COUNTER_CLOCKWISE;
-    if(cross(b, c) < EPS) return CLOCKWISE;
+    if(cross(b, c) < -EPS) return CLOCKWISE;
     if(dot(b, c) < 0) return ONLINE_BACK;
     if(abs(b) < abs(c)) return ONLINE_FRONT;
     return ON_SEGMENT;

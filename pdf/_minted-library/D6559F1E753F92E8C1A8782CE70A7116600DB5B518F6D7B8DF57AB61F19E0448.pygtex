@@ -1,0 +1,24 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{c+cp}{\PYGZsh{}[[\PYGZsh{}include]]\PYGZsh{} \PYGZlt{}iostream\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}[[\PYGZsh{}include]]\PYGZsh{} \PYGZlt{}algorithm\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}[[\PYGZsh{}include]]\PYGZsh{} \PYGZlt{}iomanip\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}[[\PYGZsh{}include]]\PYGZsh{} \PYGZlt{}map\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}[[\PYGZsh{}include]]\PYGZsh{} \PYGZlt{}set\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}[[\PYGZsh{}include]]\PYGZsh{} \PYGZlt{}queue\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}[[\PYGZsh{}include]]\PYGZsh{} \PYGZlt{}stack\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}[[\PYGZsh{}include]]\PYGZsh{} \PYGZlt{}numeric\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}[[\PYGZsh{}include]]\PYGZsh{} \PYGZlt{}bitset\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}[[\PYGZsh{}include]]\PYGZsh{} \PYGZlt{}cmath\PYGZgt{}}
+
+\PYG{k}{static} \PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{MOD} \PYG{o}{=} \PYG{l+m+mi}{1000000007}\PYG{p}{;}
+\PYG{k}{using} \PYG{n}{ll} \PYG{o}{=} \PYG{k+kt}{long} \PYG{k+kt}{long}\PYG{p}{;}
+\PYG{k}{using} \PYG{n}{u32} \PYG{o}{=} \PYG{k+kt}{uint32\PYGZus{}t}\PYG{p}{;}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+
+\PYG{k}{template}\PYG{o}{\PYGZlt{}}\PYG{k}{class} \PYG{n+nc}{T}\PYG{o}{\PYGZgt{}} \PYG{k}{constexpr} \PYG{n}{T} \PYG{n}{INF} \PYG{o}{=} \PYG{o}{::}\PYG{n}{numeric\PYGZus{}limits}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}::}\PYG{n}{max}\PYG{p}{()}\PYG{o}{/}\PYG{l+m+mi}{32}\PYG{o}{*}\PYG{l+m+mi}{15}\PYG{o}{+}\PYG{l+m+mi}{208}\PYG{p}{;}
+
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
