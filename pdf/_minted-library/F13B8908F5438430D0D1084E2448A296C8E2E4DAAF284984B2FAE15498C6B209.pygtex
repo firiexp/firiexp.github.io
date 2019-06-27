@@ -1,0 +1,55 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{using} \PYG{n}{state} \PYG{o}{=} \PYG{n}{string}\PYG{o}{::}\PYG{n}{const\PYGZus{}iterator}\PYG{p}{;}
+ 
+\PYG{k+kt}{int} \PYG{n+nf}{num}\PYG{p}{(}\PYG{n}{state} \PYG{o}{\PYGZam{}}\PYG{n}{cur}\PYG{p}{);}
+\PYG{k+kt}{int} \PYG{n+nf}{factor}\PYG{p}{(}\PYG{n}{state} \PYG{o}{\PYGZam{}}\PYG{n}{cur}\PYG{p}{);}
+\PYG{k+kt}{int} \PYG{n+nf}{muldiv}\PYG{p}{(}\PYG{n}{state} \PYG{o}{\PYGZam{}}\PYG{n}{cur}\PYG{p}{);}
+\PYG{k+kt}{int} \PYG{n+nf}{addsub}\PYG{p}{(}\PYG{n}{state} \PYG{o}{\PYGZam{}}\PYG{n}{cur}\PYG{p}{);}
+\PYG{k+kt}{int} \PYG{n+nf}{expr}\PYG{p}{(}\PYG{n}{state} \PYG{o}{\PYGZam{}}\PYG{n}{cur}\PYG{p}{);}
+ 
+\PYG{k+kt}{int} \PYG{n+nf}{factor}\PYG{p}{(}\PYG{n}{state} \PYG{o}{\PYGZam{}}\PYG{n}{cur}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{isdigit}\PYG{p}{(}\PYG{o}{*}\PYG{n}{cur}\PYG{p}{))} \PYG{k}{return} \PYG{n}{num}\PYG{p}{(}\PYG{n}{cur}\PYG{p}{);}
+    \PYG{n}{cur}\PYG{o}{++}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{ans} \PYG{o}{=} \PYG{n}{addsub}\PYG{p}{(}\PYG{n}{cur}\PYG{p}{);}
+    \PYG{n}{cur}\PYG{o}{++}\PYG{p}{;}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+ 
+\PYG{k+kt}{int} \PYG{n+nf}{num}\PYG{p}{(}\PYG{n}{state} \PYG{o}{\PYGZam{}}\PYG{n}{cur}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans} \PYG{o}{=} \PYG{o}{*}\PYG{n}{cur} \PYG{o}{\PYGZhy{}}\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{isdigit}\PYG{p}{(}\PYG{o}{*++}\PYG{n}{cur}\PYG{p}{))} \PYG{n}{ans} \PYG{o}{=} \PYG{n}{ans}\PYG{o}{*}\PYG{l+m+mi}{10} \PYG{o}{+} \PYG{p}{(}\PYG{o}{*}\PYG{n}{cur}\PYG{o}{\PYGZhy{}}\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{);}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+ 
+\PYG{k+kt}{int} \PYG{n+nf}{muldiv}\PYG{p}{(}\PYG{n}{state} \PYG{o}{\PYGZam{}}\PYG{n}{cur}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans} \PYG{o}{=} \PYG{n}{factor}\PYG{p}{(}\PYG{n}{cur}\PYG{p}{);}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n+nb}{true}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{*}\PYG{n}{cur} \PYG{o}{==} \PYG{l+s+sc}{\PYGZsq{}*\PYGZsq{}}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{cur}\PYG{o}{++}\PYG{p}{;}
+            \PYG{n}{ans} \PYG{o}{*=} \PYG{n}{factor}\PYG{p}{(}\PYG{n}{cur}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{o}{*}\PYG{n}{cur} \PYG{o}{==} \PYG{l+s+sc}{\PYGZsq{}/\PYGZsq{}}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{cur}\PYG{o}{++}\PYG{p}{;}
+            \PYG{n}{ans} \PYG{o}{/=} \PYG{n}{factor}\PYG{p}{(}\PYG{n}{cur}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{break}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+ 
+\PYG{k+kt}{int} \PYG{n+nf}{addsub}\PYG{p}{(}\PYG{n}{state} \PYG{o}{\PYGZam{}}\PYG{n}{cur}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans} \PYG{o}{=} \PYG{n}{muldiv}\PYG{p}{(}\PYG{n}{cur}\PYG{p}{);}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n+nb}{true}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{*}\PYG{n}{cur} \PYG{o}{==} \PYG{l+s+sc}{\PYGZsq{}+\PYGZsq{}}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{cur}\PYG{o}{++}\PYG{p}{;}
+            \PYG{n}{ans} \PYG{o}{+=} \PYG{n}{muldiv}\PYG{p}{(}\PYG{n}{cur}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{o}{*}\PYG{n}{cur} \PYG{o}{==} \PYG{l+s+sc}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{cur}\PYG{o}{++}\PYG{p}{;}
+            \PYG{n}{ans} \PYG{o}{\PYGZhy{}=} \PYG{n}{muldiv}\PYG{p}{(}\PYG{n}{cur}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{break}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+ 
+\PYG{k+kt}{int} \PYG{n+nf}{expr}\PYG{p}{(}\PYG{n}{state} \PYG{o}{\PYGZam{}}\PYG{n}{cur}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{addsub}\PYG{p}{(}\PYG{n}{cur}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
