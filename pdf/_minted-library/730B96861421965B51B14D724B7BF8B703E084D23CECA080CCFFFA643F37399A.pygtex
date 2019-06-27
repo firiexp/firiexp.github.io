@@ -1,0 +1,40 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{class} \PYG{n+nc}{Bipartite\PYGZus{}Matching} \PYG{p}{\PYGZob{}}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{G}\PYG{p}{;}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{match}\PYG{p}{,} \PYG{n}{used}\PYG{p}{,} \PYG{n}{alive}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{t}\PYG{p}{;}
+\PYG{k}{public}\PYG{o}{:}
+    \PYG{k}{explicit} \PYG{n}{Bipartite\PYGZus{}Matching}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)}\PYG{o}{:} \PYG{n}{t}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{),} \PYG{n}{G}\PYG{p}{(}\PYG{n}{n}\PYG{p}{),} \PYG{n}{match}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{),} \PYG{n}{used}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{),} \PYG{n}{alive}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}\PYGZcb{};}
+
+    \PYG{k+kt}{void} \PYG{n+nf}{connect}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{,} \PYG{k+kt}{int} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{G}\PYG{p}{[}\PYG{n}{a}\PYG{p}{].}\PYG{n}{emplace\PYGZus{}back}\PYG{p}{(}\PYG{n}{b}\PYG{p}{);}
+        \PYG{n}{G}\PYG{p}{[}\PYG{n}{b}\PYG{p}{].}\PYG{n}{emplace\PYGZus{}back}\PYG{p}{(}\PYG{n}{a}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kt}{bool} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{used}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]} \PYG{o}{=} \PYG{n}{t}\PYG{p}{;}
+        \PYG{k}{for} \PYG{p}{(}\PYG{k}{auto} \PYG{o}{\PYGZam{}\PYGZam{}}\PYG{n+nl}{i} \PYG{p}{:} \PYG{n}{G}\PYG{p}{[}\PYG{n}{x}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{w} \PYG{o}{=} \PYG{n}{match}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{alive}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{k}{continue}\PYG{p}{;}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{w} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o}{||} \PYG{p}{(}\PYG{n}{used}\PYG{p}{[}\PYG{n}{w}\PYG{p}{]} \PYG{o}{!=} \PYG{n}{t} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{w}\PYG{p}{)))\PYGZob{}}
+                \PYG{n}{match}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]} \PYG{o}{=} \PYG{n}{i}\PYG{p}{;}
+                \PYG{n}{match}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{n}{x}\PYG{p}{;}
+                \PYG{k}{return} \PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kt}{int} \PYG{n+nf}{matching}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{ans} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{G}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();} \PYG{o}{++}\PYG{n}{i}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{alive}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{k}{continue}\PYG{p}{;}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{match}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{o}{++}\PYG{n}{t}\PYG{p}{;}
+                \PYG{n}{ans} \PYG{o}{+=} \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

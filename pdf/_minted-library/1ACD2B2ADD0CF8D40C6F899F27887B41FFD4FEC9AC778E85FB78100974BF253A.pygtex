@@ -1,0 +1,62 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{template}\PYG{o}{\PYGZlt{}}\PYG{k}{class} \PYG{n+nc}{T}\PYG{p}{,} \PYG{k+kt}{size\PYGZus{}t} \PYG{n}{SIZE}\PYG{o}{\PYGZgt{}}
+\PYG{k}{struct} \PYG{n}{SquareMatrix} \PYG{p}{\PYGZob{}}
+    \PYG{k}{using} \PYG{n}{ar} \PYG{o}{=} \PYG{n}{array}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{p}{,} \PYG{n}{SIZE}\PYG{o}{\PYGZgt{}}\PYG{p}{;}
+    \PYG{k}{using} \PYG{n}{mat} \PYG{o}{=} \PYG{n}{array}\PYG{o}{\PYGZlt{}}\PYG{n}{ar}\PYG{p}{,} \PYG{n}{SIZE}\PYG{o}{\PYGZgt{}}\PYG{p}{;}
+    \PYG{n}{mat} \PYG{n}{A}\PYG{p}{;}
+    \PYG{n}{SquareMatrix}\PYG{p}{()} \PYG{o}{=} \PYG{k}{default}\PYG{p}{;}
+    \PYG{k}{static} \PYG{n}{SquareMatrix} \PYG{n+nf}{I}\PYG{p}{(}\PYG{n}{T} \PYG{n}{e}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{SquareMatrix} \PYG{n}{X}\PYG{p}{;}
+        \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{SIZE}\PYG{p}{;} \PYG{o}{++}\PYG{n}{i}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{X}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{n}{e}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{X}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kr}{inline} \PYG{k}{const} \PYG{n}{ar} \PYG{o}{\PYGZam{}}\PYG{k}{operator}\PYG{p}{[](}\PYG{k+kt}{int} \PYG{n}{k}\PYG{p}{)} \PYG{k}{const}\PYG{p}{\PYGZob{}} \PYG{k}{return} \PYG{p}{(}\PYG{n}{A}\PYG{p}{.}\PYG{n}{at}\PYG{p}{(}\PYG{n}{k}\PYG{p}{));} \PYG{p}{\PYGZcb{}}
+    \PYG{k+kr}{inline} \PYG{n}{ar} \PYG{o}{\PYGZam{}}\PYG{k}{operator}\PYG{p}{[](}\PYG{k+kt}{int} \PYG{n}{k}\PYG{p}{)} \PYG{p}{\PYGZob{}} \PYG{k}{return} \PYG{p}{(}\PYG{n}{A}\PYG{p}{.}\PYG{n}{at}\PYG{p}{(}\PYG{n}{k}\PYG{p}{));} \PYG{p}{\PYGZcb{}}
+    \PYG{n}{SquareMatrix} \PYG{o}{\PYGZam{}}\PYG{k}{operator}\PYG{o}{+=} \PYG{p}{(}\PYG{k}{const} \PYG{n}{SquareMatrix} \PYG{o}{\PYGZam{}}\PYG{n}{B}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{SIZE}\PYG{p}{;} \PYG{o}{++}\PYG{n}{i}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{j} \PYG{o}{\PYGZlt{}} \PYG{n}{SIZE}\PYG{p}{;} \PYG{o}{++}\PYG{n}{j}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{)[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{B}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{n}{SquareMatrix} \PYG{o}{\PYGZam{}}\PYG{k}{operator}\PYG{o}{\PYGZhy{}=} \PYG{p}{(}\PYG{k}{const} \PYG{n}{SquareMatrix} \PYG{o}{\PYGZam{}}\PYG{n}{B}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{SIZE}\PYG{p}{;} \PYG{o}{++}\PYG{n}{i}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{j} \PYG{o}{\PYGZlt{}} \PYG{n}{SIZE}\PYG{p}{;} \PYG{o}{++}\PYG{n}{j}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{)[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}=} \PYG{n}{B}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{n}{SquareMatrix} \PYG{o}{\PYGZam{}}\PYG{k}{operator}\PYG{o}{*=}\PYG{p}{(}\PYG{k}{const} \PYG{n}{SquareMatrix} \PYG{o}{\PYGZam{}}\PYG{n}{B}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{SquareMatrix} \PYG{n}{C}\PYG{p}{;}
+        \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{SIZE}\PYG{p}{;} \PYG{o}{++}\PYG{n}{i}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{j} \PYG{o}{\PYGZlt{}} \PYG{n}{SIZE}\PYG{p}{;} \PYG{o}{++}\PYG{n}{j}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{k} \PYG{o}{\PYGZlt{}} \PYG{n}{SIZE}\PYG{p}{;} \PYG{o}{++}\PYG{n}{k}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{C}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]} \PYG{o}{+=} \PYG{p}{((}\PYG{o}{*}\PYG{k}{this}\PYG{p}{)[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{k}\PYG{p}{]} \PYG{o}{*} \PYG{n}{B}\PYG{p}{[}\PYG{n}{k}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]);}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{A}\PYG{p}{.}\PYG{n}{swap}\PYG{p}{(}\PYG{n}{C}\PYG{p}{.}\PYG{n}{A}\PYG{p}{);}
+        \PYG{k}{return} \PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{n}{SquareMatrix} \PYG{n}{pow}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{n}\PYG{p}{)} \PYG{k}{const} \PYG{p}{\PYGZob{}}
+        \PYG{n}{SquareMatrix} \PYG{n}{a} \PYG{o}{=} \PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{),} \PYG{n}{res} \PYG{o}{=} \PYG{n}{I}\PYG{p}{(}\PYG{n}{T}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{));}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{n} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{n} \PYG{o}{\PYGZam{}} \PYG{l+m+mi}{1}\PYG{p}{)} \PYG{n}{res} \PYG{o}{*=} \PYG{n}{a}\PYG{p}{;}
+            \PYG{n}{a} \PYG{o}{*=} \PYG{n}{a}\PYG{p}{;}
+            \PYG{n}{n} \PYG{o}{\PYGZgt{}\PYGZgt{}=} \PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{res}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{SquareMatrix} \PYG{k}{operator}\PYG{o}{+}\PYG{p}{(}\PYG{k}{const} \PYG{n}{SquareMatrix} \PYG{o}{\PYGZam{}}\PYG{n}{B}\PYG{p}{)} \PYG{k}{const} \PYG{p}{\PYGZob{}}\PYG{k}{return} \PYG{n}{SquareMatrix}\PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{)} \PYG{o}{+=} \PYG{n}{B}\PYG{p}{;\PYGZcb{}}
+    \PYG{n}{SquareMatrix} \PYG{k}{operator}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{k}{const} \PYG{n}{SquareMatrix} \PYG{o}{\PYGZam{}}\PYG{n}{B}\PYG{p}{)} \PYG{k}{const} \PYG{p}{\PYGZob{}}\PYG{k}{return} \PYG{n}{SquareMatrix}\PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{)} \PYG{o}{\PYGZhy{}=} \PYG{n}{B}\PYG{p}{;\PYGZcb{}}
+    \PYG{n}{SquareMatrix} \PYG{k}{operator}\PYG{o}{*}\PYG{p}{(}\PYG{k}{const} \PYG{n}{SquareMatrix} \PYG{o}{\PYGZam{}}\PYG{n}{B}\PYG{p}{)} \PYG{k}{const} \PYG{p}{\PYGZob{}}\PYG{k}{return} \PYG{n}{SquareMatrix}\PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{)} \PYG{o}{*=} \PYG{n}{B}\PYG{p}{;\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

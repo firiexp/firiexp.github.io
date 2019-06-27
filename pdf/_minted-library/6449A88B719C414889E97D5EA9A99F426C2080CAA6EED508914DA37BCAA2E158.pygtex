@@ -1,0 +1,35 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{template}\PYG{o}{\PYGZlt{}}\PYG{k}{class} \PYG{n+nc}{T}\PYG{p}{,} \PYG{k}{class} \PYG{n+nc}{F}\PYG{o}{\PYGZgt{}}
+\PYG{k}{class} \PYG{n+nc}{sliding\PYGZus{}window} \PYG{p}{\PYGZob{}}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}} \PYG{n}{v}\PYG{p}{;}
+    \PYG{n}{deque}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}} \PYG{n}{Q}\PYG{p}{;}
+    \PYG{n}{F} \PYG{n}{f}\PYG{p}{;}
+\PYG{k}{public}\PYG{o}{:}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{;}
+    \PYG{k}{explicit} \PYG{n+nf}{sliding\PYGZus{}window}\PYG{p}{(}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}} \PYG{o}{\PYGZam{}}\PYG{n}{v}\PYG{p}{,} \PYG{n}{F} \PYG{n}{f}\PYG{p}{)} \PYG{o}{:} \PYG{n}{v}\PYG{p}{(}\PYG{n}{v}\PYG{p}{),} \PYG{n}{f}\PYG{p}{(}\PYG{n}{f}\PYG{p}{),} \PYG{n}{l}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{),} \PYG{n}{r}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{};}
+    \PYG{k+kt}{void} \PYG{n+nf}{set}\PYG{p}{(}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}} \PYG{o}{\PYGZam{}}\PYG{n}{u}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{v} \PYG{o}{=} \PYG{n}{u}\PYG{p}{;}
+        \PYG{n}{Q}\PYG{p}{.}\PYG{n}{clear}\PYG{p}{();}
+        \PYG{n}{l} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{r} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{void} \PYG{n+nf}{reset}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{Q}\PYG{p}{.}\PYG{n}{clear}\PYG{p}{();}
+        \PYG{n}{l} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{r} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{void} \PYG{n+nf}{slideL}\PYG{p}{()\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{Q}\PYG{p}{.}\PYG{n}{front}\PYG{p}{()} \PYG{o}{==} \PYG{n}{l}\PYG{o}{++}\PYG{p}{)} \PYG{n}{Q}\PYG{p}{.}\PYG{n}{pop\PYGZus{}front}\PYG{p}{();}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{void} \PYG{n+nf}{slideR}\PYG{p}{()\PYGZob{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{Q}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{()} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{o}{!}\PYG{n}{f}\PYG{p}{(}\PYG{n}{v}\PYG{p}{[}\PYG{n}{Q}\PYG{p}{.}\PYG{n}{back}\PYG{p}{()],} \PYG{n}{v}\PYG{p}{[}\PYG{n}{r}\PYG{p}{]))} \PYG{n}{Q}\PYG{p}{.}\PYG{n}{pop\PYGZus{}back}\PYG{p}{();}
+        \PYG{n}{Q}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{r}\PYG{o}{++}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{T} \PYG{n+nf}{get\PYGZus{}index}\PYG{p}{()}  \PYG{p}{\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{l} \PYG{o}{==} \PYG{n}{r}\PYG{p}{)} \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{return} \PYG{n}{Q}\PYG{p}{.}\PYG{n}{front}\PYG{p}{();}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{T} \PYG{n+nf}{value}\PYG{p}{()}  \PYG{p}{\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{l} \PYG{o}{==} \PYG{n}{r}\PYG{p}{)} \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{return} \PYG{n}{v}\PYG{p}{[}\PYG{n}{Q}\PYG{p}{.}\PYG{n}{front}\PYG{p}{()];}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

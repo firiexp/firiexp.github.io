@@ -1,10 +1,57 @@
-\documentclass[11pt,a4j]{jarticle}
+\documentclass[11pt,a4paper]{jarticle}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{minted}
 \usepackage{mdframed}
+\usepackage[top=15truemm, bottom=15truemm, left=15truemm, right=15truemm]{geometry}
+
+\newcommand{\mycode}[2]{
+\subsection{#1}
+\inputminted[linenos, fontfamily=courier, breaklines, mathescape, fontsize=\small]{cpp}{../_includes/code/#2}
+}
+
 \begin{document}
-\inputminted[linenos, fontfamily=courier, mathescape, fontsize=\small]{cpp}{../_includes/code/template.cpp}
-\inputminted[linenos, fontfamily=courier, mathescape, fontsize=\small]{cpp}{../_includes/code/dijkstra.cpp}
-\inputminted[linenos, fontfamily=courier, mathescape, fontsize=\small]{cpp}{../_includes/code/extgcd.cpp}
+\tableofcontents
+\newpage
+\section{備忘録}
+
+\mycode{テンプレート}{template.cpp}
+\mycode{makev chmax chmin}{makev.cpp}
+\subsection{ファイルを作成する}
+テンプレートを書いたら、bashを開いて、以下のコマンドを打つ。
+\begin{minted}[linenos, fontfamily=courier, breaklines, mathescape, fontsize=\small]{bash}
+for i in {A..H}; do cp main.cpp $i.cpp; done
+\end{minted}
+\newpage
+\section{使いそうなライブラリ}
+\mycode{繰り返し二乗法}{pow.cpp}
+\mycode{約数列挙}{divisor.cpp}
+\mycode{素数列挙・素因数分解}{primefactor.cpp}
+\newpage
+\mycode{ダイクストラ法}{dijkstra.cpp}
+\mycode{kruskal法(最小全域木)}{kruskal.cpp}
+\mycode{Union-Find}{unionfind.cpp}
+\mycode{正方行列}{squarematrix.cpp}
+\mycode{Dinic法(最大流)}{dinic.cpp}
+\mycode{幾何ライブラリ}{geometry.cpp}
+\mycode{木上の非再帰dfs}{treedfs.cpp}
+\section{まあまあ使いそうなライブラリ}
+\mycode{階乗ライブラリ}{factorial.cpp}
+\mycode{Binary Indexed Tree (Fenwick Tree)}{binaryindexedtree.cpp}
+\mycode{Segment Tree}{segtree.cpp}
+\mycode{遅延伝播Segment Tree}{lazysegtree.cpp}
+\mycode{modint(固定MOD)}{modint.cpp}
+\mycode{行列}{matrix.cpp}
+\section{あまり使わなさそうなライブラリ}
+\mycode{中国剰余定理}{CRT.cpp}
+\mycode{拡張ユークリッドの互除法}{extgcd.cpp}
+\mycode{ベルマンフォード法}{bellman_ford.cpp}
+\mycode{二部グラフの最大マッチング}{bipartite_matching.cpp}
+\mycode{最大独立集合}{independentset.cpp}
+\mycode{最近共通祖先(LCA)}{LCA.cpp}
+\mycode{Convex-Hull-Trick}{monotoniccht.cpp}
+\mycode{スライド最小値}{slidingwindow.cpp}
+\mycode{ポテンシャル付きUnion-Find}{weightedunionfind.cpp}
+\mycode{modint(実行時MOD)}{modint_arbitrary.cpp}
+\mycode{Xor-Shift}{xorshift.cpp}
 \end{document}
