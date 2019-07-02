@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 幾何ライブラリ(未完成)
-date: 2018-06-21
+title: 幾何ライブラリ
+date: 2019-07-02
 category: 幾何
 tags: 幾何
 ---
 
 ## 説明
-幾何問題を解くごとに充実していきますが、まだ未完成です。
+GRLを全部埋めたので、一応使えるようになりました。
 {% include a.html code="geometry.cpp" %}
