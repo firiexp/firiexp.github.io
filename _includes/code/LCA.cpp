@@ -1,45 +1,45 @@
-template <class M>
-struct SegmentTree{
-    using T = typename M::T;
-    int sz;
-    vector<T> seg;
-    explicit SegmentTree(int n) {
-        sz = 1;
-        while(sz < n) sz <<= 1;
-        seg.assign(2*sz, M::e());
-    }
+ template <class F>
+struct SparseTable {
+    using T = typename F::T;
+    vector<vector<T>> table;
+    vector<int> u;
+    SparseTable() = default;
+    explicit SparseTable(const vector<T> &v){ build(v); }
  
-    void set(int k, const T &x){ seg[k + sz] = x; }
- 
-    void build(){
-        for (int i = sz-1; i > 0; --i) seg[i] = M::f(seg[2*i], seg[2*i+1]);
-    }
- 
-    void update(int k, const T &x){
-        k += sz;
-        seg[k] = x;
-        while (k >>= 1) seg[k] = M::f(seg[2*k], seg[2*k+1]);
+    void build(const vector<T> &v){
+        int n = v.size(), m = 1;
+        while((1<<m) <= n) m++;
+        table.assign(m, vector<T>(n));
+        u.assign(n+1, 0);
+        for (int i = 2; i <= n; ++i) {
+            u[i] = u[i>>1] + 1;
+        }
+        for (int i = 0; i < n; ++i) {
+            table[0][i] = v[i];
+        }
+        for (int i = 1; i < m; ++i) {
+            int x = (1<<(i-1));
+            for (int j = 0; j < n; ++j) {
+                table[i][j] = F::f(table[i-1][j], table[i-1][min(j+x, n-1)]);
+            }
+        }
     }
  
     T query(int a, int b){
-        T l = M::e(), r = M::e();
-        for(a += sz, b += sz; a < b; a >>=1, b>>=1){
-            if(a & 1) l = M::f(l, seg[a++]);
-            if(b & 1) r = M::f(seg[--b], r);
-        }
-        return M::f(l, r);
+        int l = b-a;
+        return F::f(table[u[l]][a], table[u[l]][b-(1<<u[l])]);
     }
- 
-    T operator[](const int &k) const { return seg[k + sz]; }
 };
  
-struct Monoid{
+ 
+struct F {
     using T = pair<int, int>;
     static T f(T a, T b) { return min(a, b); }
-    static T e() { return T(INF<int>, -1); }
+    static T e() { return T{INF<int>, -1}; }
 };
  
 class Graph {
+    SparseTable<F> table;
     void dfs_euler(int v, int p, int d, int &k){
         id[v] = k;
         vs[k] = v;
@@ -56,7 +56,7 @@ public:
     int n;
     vector<vector<int>> G;
     vector<int> vs, depth, id;
-    explicit Graph(int n) : n(n), G(n), vs(2*n-1), depth(2*n-1), id(n) {};
+    explicit Graph(int n) : n(n), G(n), vs(2*n-1), depth(2*n-1), id(n), table() {};
     void add_edge(int a, int b){
         G[a].emplace_back(b);
         G[b].emplace_back(a);
@@ -66,22 +66,18 @@ public:
         int k = 0;
         dfs_euler(root, -1, 0, k);
     }
-};
  
-class LCA {
-    Graph G;
-    SegmentTree<Monoid> seg;
-public:
-    explicit LCA(Graph G) : G(G), seg(2*G.n-1) {
-        int n = G.n;
+    void buildLCA(){
+        eulertour(0);
+        vector<pair<int, int>> v(2*n-1);
         for (int i = 0; i < 2*n-1; ++i) {
-            seg.set(i, pair<int, int>(G.depth[i], i));
+            v[i] = make_pair(depth[i], i);
         }
-        seg.build();
-    };
+        table.build(v);
+    }
  
-    int lca(int u, int v){
-        if(G.id[u] > G.id[v]) swap(u, v);
-        return seg.query(G.id[u], G.id[v]+1).second;
+    int LCA(int u, int v){
+        if(id[u] > id[v]) swap(u, v);
+        return table.query(id[u], id[v]+1).second;
     }
 };

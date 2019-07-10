@@ -26,7 +26,14 @@ istream& operator>> (istream& s, Point& P){
 inline real dot(Point a, Point b){ return a.x*b.x + a.y*b.y; }
 inline real cross(Point a, Point b){ return a.x*b.y - a.y*b.x; }
 inline real abs(Point a){ return sqrt(dot(a, a)); }
- 
+
+
+real angle(Point A, Point B){
+    return acos(dot(A, B)/abs(A)/abs(B));
+}
+
+
+
 static constexpr int COUNTER_CLOCKWISE = 1;
 static constexpr int CLOCKWISE = -1;
 static constexpr int ONLINE_BACK = 2;
@@ -216,7 +223,7 @@ real area(Circle c, Polygon &v){
         }
     }
     for (int i = 0; i < u.size(); ++i) {
-        Point A = u[i], B = u[(i+1)%u.size()];
+        Point A = u[i]-c.c, B = u[(i+1)%u.size()]-c.c;
         if(abs(A) >= c.r+EPS || abs(B) >= c.r+EPS){
             Point C = polar(1, arg(B)-arg(A));
             ans += c.r*c.r*arg(C)/2;
