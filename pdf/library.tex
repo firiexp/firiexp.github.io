@@ -7,9 +7,7 @@
 
 \newcommand{\mycode}[2]{
 \subsection{#1}
-\inputminted[linenos, fontfamily=courier, breaklines, mathescape, fontsize=\small]{cpp}{../_includes/code/#2}
-}
-
+\inputminted[linenos, fontfamily=courier, breaklines, mathescape, fontsize=\footnotesize]{cpp}{../_includes/code/#2}}
 \begin{document}
 \tableofcontents
 \newpage
@@ -17,10 +15,16 @@
 
 \mycode{テンプレート}{template.cpp}
 \mycode{makev chmax chmin}{makev.cpp}
+\mycode{unique}{uniq.cpp}
 \subsection{ファイルを作成する}
 テンプレートを書いたら、bashを開いて、以下のコマンドを打つ。
 \begin{minted}[linenos, fontfamily=courier, breaklines, mathescape, fontsize=\small]{bash}
 for i in {A..H}; do cp main.cpp $i.cpp; done
+for i in {A..H}; do echo -e "add_executable($i.exe $i.cpp)" >> CMakeLists.txt; done
+\end{minted}
+
+\begin{minted}[linenos, fontfamily=courier, breaklines, mathescape, fontsize=\small]{cmake}
+add_compiler_options(-Wall -Wextra -Wshadow -D_GLIBCXX_DEBUG -ftrapv)
 \end{minted}
 \newpage
 \mycode{構文解析}{parse.cpp}
@@ -46,6 +50,7 @@ for i in {A..H}; do cp main.cpp $i.cpp; done
 \mycode{行列}{matrix.cpp}
 \section{あまり使わなさそうなライブラリ}
 \mycode{中国剰余定理}{CRT.cpp}
+\mycode{SparseTable}{sparsetable.cpp}
 \mycode{拡張ユークリッドの互除法}{extgcd.cpp}
 \mycode{ベルマンフォード法}{bellman_ford.cpp}
 \mycode{二部グラフの最大マッチング}{bipartite_matching.cpp}

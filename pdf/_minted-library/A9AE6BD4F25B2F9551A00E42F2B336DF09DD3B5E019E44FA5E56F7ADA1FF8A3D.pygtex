@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{for} i in \PYG{o}{\PYGZob{}}A..H\PYG{o}{\PYGZcb{}}\PYG{p}{;} \PYG{k}{do} cp main.cpp \PYG{n+nv}{\PYGZdl{}i}.cpp\PYG{p}{;} \PYG{k}{done}
+\PYG{k}{for} i in \PYG{o}{\PYGZob{}}A..H\PYG{o}{\PYGZcb{}}\PYG{p}{;} \PYG{k}{do} \PYG{n+nb}{echo} \PYG{l+s+s2}{\PYGZdq{}add\PYGZus{}executable(}\PYG{n+nv}{\PYGZdl{}i}\PYG{l+s+s2}{.exe }\PYG{n+nv}{\PYGZdl{}i}\PYG{l+s+s2}{.cpp)\PYGZdq{}} \PYGZgt{}\PYGZgt{} CMakeLists.txt\PYG{p}{;} \PYG{k}{done}
+\end{Verbatim}

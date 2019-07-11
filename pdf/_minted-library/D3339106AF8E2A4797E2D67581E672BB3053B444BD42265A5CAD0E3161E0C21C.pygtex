@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{n+nb}{add\PYGZus{}compiler\PYGZus{}options}\PYG{p}{(}\PYG{l+s}{\PYGZhy{}Wall} \PYG{l+s}{\PYGZhy{}Wextra} \PYG{l+s}{\PYGZhy{}Wshadow} \PYG{l+s}{\PYGZhy{}D\PYGZus{}GLIBCXX\PYGZus{}DEBUG} \PYG{l+s}{\PYGZhy{}ftrapv}\PYG{p}{)}
+\end{Verbatim}
