@@ -98,6 +98,29 @@ struct poly {
     poly operator-(const poly &a) const { return poly(*this) -= a; }
     poly operator*(const poly &a) const { return poly(*this) *= a; }
 
+    poly inv() const {
+        int n = size();
+        vector<int> rr(1, ntt.inv(this->v[0]));
+        poly r(rr);
+        for (int k = 2; k <= n; k <<= 1) {
+            vector<int> u(k);
+            for (int i = 0; i < k; ++i) {
+                u[i] = this->v[i];
+            }
+            poly ff(u);
+            poly nr = (r*r);
+            nr = nr*ff;
+            nr.cut(k);
+            for (int i = 0; i < k/2; ++i) {
+                nr[i] = (2*r[i]-nr[i]+M)%M;
+                nr[i+k/2] = (M-nr[i+k/2])%M;
+            }
+            r = nr;
+        }
+        r.v.resize(n);
+        return r;
+    }
+
     poly& operator+=(const poly &a) {
         this->v.resize(max(size(), a.size()));
         for (int i = 0; i < a.size(); ++i) {
@@ -127,26 +150,7 @@ struct poly {
         return *this;
     }
 
-    poly inv() const {
-        int n = size();
-        vector<int> rr(1, ntt.inv(this->v[0]));
-        poly r(rr);
-        for (int k = 2; k <= n; k <<= 1) {
-            vector<int> u(k);
-            for (int i = 0; i < k; ++i) {
-                u[i] = this->v[i];
-            }
-            poly ff(u);
-            poly nr = (r*r);
-            nr = nr*ff;
-            nr.cut(k);
-            for (int i = 0; i < k/2; ++i) {
-                nr[i] = (2*r[i]-nr[i]+M)%M;
-                nr[i+k/2] = (M-nr[i+k/2])%M;
-            }
-            r = nr;
-        }
-        r.v.resize(n);
-        return r;
+    poly& operator/=(const poly &a){
+        return (*this *= a.inv()); 
     }
 };
