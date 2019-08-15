@@ -1,3 +1,21 @@
+template<typename T>
+T extgcd(T a, T b, T &x ,T &y){
+    for (T u = y = 1, v = x = 0; a; ) {
+        ll q = b/a;
+        swap(x -= q*u, u);
+        swap(y -= q*v, v);
+        swap(b -= q*a, a);
+    }
+    return b;
+}
+
+template<typename T>
+T mod_inv(T x, T m){
+    T s, t;
+    extgcd(x, m, s, t);
+    return (m+s)% m;
+}
+
 #include <cmath>
 namespace FFT {
     const int max_base = 19, maxN = 1 << max_base; // N <= 2e5
@@ -55,12 +73,10 @@ namespace FFT {
 
     void multi_mod(int m){
         for (int i = 0; i < N; ++i) {
-            ll x = A[i] % m;
-            a[i] = num(x & ((1LL << 15)-1), x >> 15);
+            a[i] = num( A[i] & ((1LL << 15)-1),  A[i] >> 15);
         }
         for (int i = 0; i < N; ++i) {
-            ll x = B[i] % m;
-            b[i] = num(x & ((1LL << 15)-1), x >> 15);
+            b[i] = num(B[i] & ((1LL << 15)-1), B[i] >> 15);
         }
         fft(a, f);
         fft(b, g);
@@ -99,40 +115,74 @@ namespace FFT {
     }
 }
 
+
 struct poly {
     vector<int> v;
     poly() = default;
     explicit poly(vector<int> vv) : v(std::move(vv)) {};
-    int size() {return (int)v.size(); }
+    int size() const {return (int)v.size(); }
     poly cut(int len){
         if(len < v.size()) v.resize(static_cast<unsigned long>(len));
         return *this;
     }
     inline int& operator[] (int i) {return v[i]; }
+   
+
+    poly inv() const {
+        int n = size();
+        vector<int> rr(1, mod_inv(this->v[0], MOD));
+        poly r(rr);
+        for (int k = 2; k <= n; k <<= 1) {
+            vector<int> u(k);
+            for (int i = 0; i < k; ++i) {
+                u[i] = this->v[i];
+            }
+            poly ff(u);
+            poly nr = (r*r);
+            nr = nr*ff;
+            nr.cut(k);
+            for (int i = 0; i < k/2; ++i) {
+                nr[i] = (2*r[i]-nr[i]+MOD)%MOD;
+                nr[i+k/2] = (MOD-nr[i+k/2])%MOD;
+            }
+            r = nr;
+        }
+        r.v.resize(n);
+        return r;
+    }
+
+    poly operator+(const poly &a) const { return poly(*this) += a; }
+    poly operator-(const poly &a) const { return poly(*this) -= a; }
+    poly operator*(const poly &a) const { return poly(*this) *= a; }
+    poly operator*(const poly &a) const { return poly(*this) /= a; }
+
+    poly& operator+=(const poly &a) {
+        this->v.resize(max(size(), a.size()));
+        for (int i = 0; i < a.size(); ++i) {
+            (this->v[i] += a.v[i]);
+            if(this->v[i] > MOD) this->v[i] -= MOD;
+        }
+        return *this;
+    }
+    poly& operator-=(const poly &a) {
+        this->v.resize(max(size(), a.size()));
+        for (int i = 0; i < a.size(); ++i) {
+            (this->v[i] += MOD-a.v[i]);
+            if(this->v[i] > MOD) this->v[i] -= MOD;
+        }
+        return *this;
+    }
+
+    poly& operator*=(const poly &a) {
+        for (int i = 0; i < size(); ++i) FFT::A[i] = this->v[i];
+        for (int i = 0; i < a.size(); ++i) FFT::B[i] = a.v[i];
+        FFT::multi_mod(size(), a.size(), MOD);
+        this->v.resize(size() + a.size()-1);
+        for (int i = 0; i < size(); ++i) this->v[i] = FFT::C[i];
+        return *this;
+    }
+    
+    poly& operator/=(const poly &a){
+        return (*this *= a.inv()); 
+    }
 };
-
-poly operator+(poly &A, poly &B){
-    poly C;
-    C.v = vector<int>(max(A.size(), B.size()));
-    for (int i = 0; i < A.size(); ++i) C[i] = A[i];
-    for (int i = 0; i < B.size(); ++i) (C[i] += B[i]) %= MOD;
-    return C;
-}
-
-poly operator-(poly &A, poly &B){
-    poly C;
-    C.v = vector<int>(max(A.size(), B.size()));
-    for (int i = 0; i < A.size(); ++i) C[i] = A[i];
-    for (int i = 0; i < B.size(); ++i) (C[i] += MOD-B[i]) %= MOD;
-    return C;
-}
-
-poly operator* (poly &A, poly &B){
-    poly C;
-    C.v = vector<int>(A.size() + B.size()-1);
-    for (int i = 0; i < A.size(); ++i) FFT::A[i] = A[i];
-    for (int i = 0; i < B.size(); ++i) FFT::B[i] = B[i];
-    FFT::multi_mod(A.size(), B.size(), MOD);
-    for (int i = 0; i < C.size(); ++i) C[i] = FFT::C[i];
-    return C;
-}
