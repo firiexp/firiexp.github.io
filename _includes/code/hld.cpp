@@ -25,10 +25,10 @@ public:
     int n;
     vector<vector<int>> G;
     vector<int> par, dep, sub_size, id, id_inv, tree_id, head;
-    explicit HeavyLightDecomposition(int n) : n(n), G(n), par(n), dep(n), sub_size(n),
+    explicit HeavyLightDecomposition(int n) : n(n), G(n), par(n), dep(n), sub_size(n, 1),
     id(n), id_inv(n), tree_id(n), head(n){}
     explicit HeavyLightDecomposition(vector<vector<int>> &G) :
-    G(G), n(n), par(n), dep(n) , sub_size(n), id(n), id_inv(n), tree_id(n), head(n) {}
+    G(G), n(n), par(n), dep(n) , sub_size(n, 1), id(n), id_inv(n), tree_id(n), head(n) {}
 
     void add_edge(int u, int v){
         G[u].emplace_back(v);
