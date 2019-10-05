@@ -53,3 +53,13 @@ public:
         return ans;
     }
 };
+
+struct M {
+    using T = mint;
+    using U = mint;
+    static T f(T a, T b) { return a*b; }
+    static T g(T a, U b) {
+        return a+b;
+    }
+    static T e() { return {1}; }
+};

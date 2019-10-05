@@ -7,11 +7,11 @@ struct edge {
 
 template <typename T>
 vector<T> dijkstra(int s,vector<vector<edge<T>>> &G){
-    size_t n=G.size();
+    auto n = G.size();
     vector<T> d(n, INF<T>);
     priority_queue<pair<T, int>,vector<pair<T, int>>,greater<>> Q;
-    d[s]=0;
-    Q.emplace(0,s);
+    d[s] = 0;
+    Q.emplace(0, s);
     while(!Q.empty()){
         T cost; int i;
         tie(cost, i) = Q.top(); Q.pop();
