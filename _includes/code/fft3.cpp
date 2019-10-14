@@ -78,8 +78,6 @@ namespace FFT {
         for (int i = 0; i < N; ++i) {
             b[i] = num(B[i] & ((1LL << 15)-1), B[i] >> 15);
         }
-        fft(a, f);
-        fft(b, g);
         for (int i = 0; i < N; ++i) {
             int j = (N-i) &(N-1);
             num a1 = (f[i] + conj(f[j])) * num(0.5, 0);
