@@ -16,9 +16,8 @@ T mod_inv(T x, T m){
     return (m+s)% m;
 }
 
-#include <cmath>
 namespace FFT {
-    const int max_base = 19, maxN = 1 << max_base; // N <= 2e5
+    const int max_base = 20, maxN = 1 << max_base; // N <= 5e5
     const double PI = acos(-1);
     struct num {
         double x{}, y{};
@@ -68,32 +67,44 @@ namespace FFT {
             }
         }
     }
-    num a[maxN], b[maxN], f[maxN], g[maxN];
+    num a[maxN], b[maxN], c[maxN], f1[maxN], f2[maxN], f3[maxN];
     ll A[maxN], B[maxN], C[maxN];
-
+    constexpr ll mask1 = (1LL << 11)-1, mask2 = (1LL << 22)-(1LL << 11), mask3 = (1LL << 33) - (1LL << 22);
     void multi_mod(int m){
         for (int i = 0; i < N; ++i) {
-            a[i] = num( A[i] & ((1LL << 15)-1),  A[i] >> 15);
+            a[i] = num( A[i] & mask1,  (A[i] & mask2) >> 11);
         }
         for (int i = 0; i < N; ++i) {
-            b[i] = num(B[i] & ((1LL << 15)-1), B[i] >> 15);
+            b[i] = num( B[i] & mask1,  (B[i] & mask2) >> 11);
         }
         for (int i = 0; i < N; ++i) {
-            int j = (N-i) &(N-1);
-            num a1 = (f[i] + conj(f[j])) * num(0.5, 0);
-            num a2 = (f[i] - conj(f[j])) * num(0, -0.5);
-            num b1 = (g[i] + conj(g[j])) * num(0.5/N, 0);
-            num b2 = (g[i] - conj(g[j])) * num(0, -0.5/N);
-            a[j] = a1*b1 + a2*b2 * num(0, 1);
-            b[j] = a1*b2 + a2*b1;
+            c[i] = num((A[i] & mask3) >> 22, (B[i] & mask3) >> 22);
         }
-        fft(a, f);
-        fft(b, g);
+        fft(a, f1);
+        fft(b, f2);
+        fft(c, f3);
         for (int i = 0; i < N; ++i) {
-            ll aa = f[i].x + 0.5;
-            ll bb = g[i].x + 0.5;
-            ll cc = f[i].y + 0.5;
-            C[i] = (aa + bb % m * (1LL << 15) + cc% m *(1LL << 30)) % m;
+            int j = (N-i)&(N-1);
+            num a1 = (f1[i] + conj(f1[j])) * num(0.5, 0);
+            num a2 = (f1[i] - conj(f1[j])) * num(0, -0.5);
+            num a3 = (f3[i] + conj(f3[j])) * num(0.5, 0);
+            num b1 = (f2[i] + conj(f2[j])) * num(0.5/N, 0);
+            num b2 = (f2[i] - conj(f2[j])) * num(0, -0.5/N);
+            num b3 = (f3[i] - conj(f3[j])) * num(0, -0.5/N);
+            a[j] = a1*b1 + (a1*b2 + a2*b1) * num(0, 1);
+            b[j] = (a1*b3 + a2*b2 + a3*b1) + (a2*b3 + a3*b2) * num(0, 1);
+            c[j] = a3*b3;
+        }
+        fft(a, f1);
+        fft(b, f2);
+        fft(c, f3);
+        for (int i = 0; i < N; ++i) {
+            ll k1 = f1[i].x + 0.5;
+            ll k2 = f1[i].y + 0.5;
+            ll k3 = f2[i].x + 0.5;
+            ll k4 = f2[i].y + 0.5;
+            ll k5 = f3[i].x + 0.5;
+            C[i] = (k1 + ((k2 + ((k3 + ((k4 + (k5 << 11) % m) << 11) % m) << 11) % m) << 11)) % m;
         }
     }
 
