@@ -1,4 +1,5 @@
-firiのライブラリです。
+firiexpのライブラリです。信頼性についてはあんまりないと思ってください。
+
 <style>
 ul li p {
     margin.bottom: 0.25em;
