@@ -12,6 +12,16 @@ struct SquareMatrix {
         return X;
     }
 
+    friend ar operator*=(ar &x, const SquareMatrix &Y) {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                 x[j] += x[i]*Y[i][j];
+            }
+        }
+        return x;
+    }
+    friend ar operator*(ar x, const SquareMatrix &Y) { return x *= Y; }
+
     inline const ar &operator[](int k) const{ return (A.at(k)); }
     inline ar &operator[](int k) { return (A.at(k)); }
     SquareMatrix &operator+= (const SquareMatrix &B){
@@ -58,3 +68,6 @@ struct SquareMatrix {
     SquareMatrix operator-(const SquareMatrix &B) const {return SquareMatrix(*this) -= B;}
     SquareMatrix operator*(const SquareMatrix &B) const {return SquareMatrix(*this) *= B;}
 };
+
+using ar = array<mint, 3>;
+using mat = SquareMatrix<mint, 3>;
