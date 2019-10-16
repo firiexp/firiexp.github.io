@@ -19,7 +19,8 @@ struct SquareMatrix {
                  ans[j] += x[i]*Y[i][j];
             }
         }
-        return ans;
+        x.swap(ans);
+        return x;
     }
     friend ar operator*(ar x, const SquareMatrix &Y) { return x *= Y; }
 
