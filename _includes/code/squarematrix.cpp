@@ -13,12 +13,13 @@ struct SquareMatrix {
     }
 
     friend ar operator*=(ar &x, const SquareMatrix &Y) {
+        ar ans;
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
-                 x[j] += x[i]*Y[i][j];
+                 ans[j] += x[i]*Y[i][j];
             }
         }
-        return x;
+        return ans;
     }
     friend ar operator*(ar x, const SquareMatrix &Y) { return x *= Y; }
 
