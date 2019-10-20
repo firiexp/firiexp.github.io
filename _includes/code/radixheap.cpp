@@ -6,7 +6,7 @@ class RadixHeap {
     RadixHeap() : last(0), sz(0), cnt(0) {}
     array<vector<pair<K, V>>, bit_length> v;
     static inline int bsr(int x){
-        return x ? bit_length-__builtin_clzll(x) : 0;
+        return x ? bit_length-__builtin_clz(x) : 0;
     }
     static inline int bsr(ll x){
         return x ? bit_length-__builtin_clzll(x) : 0;
