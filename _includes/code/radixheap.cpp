@@ -1,5 +1,5 @@
 template <class K, class V>
-struct RadixHeap {
+class RadixHeap {
     static constexpr int bit_length = sizeof(K)*8;
     K last;
     size_t sz, cnt;
@@ -11,10 +11,6 @@ struct RadixHeap {
     static inline int bsr(ll x){
         return x ? bit_length-__builtin_clzll(x) : 0;
     }
-    void emplace(K x, V val){
-        sz++;
-        v[bsr(x^last)].emplace_back(x, val);
-    }
 
     void pull() {
         if(cnt < v[0].size()) return;;
@@ -23,6 +19,11 @@ struct RadixHeap {
         last = min_element(v[i].begin(),v[i].end())->first;
         for (auto &&x : v[i]) v[bsr(x.first ^ last)].push_back(x);
         v[i].clear();
+    }
+public:
+    void emplace(K x, V val){
+        sz++;
+        v[bsr(x^last)].emplace_back(x, val);
     }
 
     pair<K, V> top() {
