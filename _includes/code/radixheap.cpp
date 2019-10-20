@@ -3,7 +3,7 @@ class RadixHeap {
     static constexpr int bit_length = sizeof(K)*8;
     K last;
     size_t sz, cnt;
-    RadixHeap() : last(0), sz(0), cnt(0) {}
+    
     array<vector<pair<K, V>>, bit_length> v;
     static inline int bsr(int x){
         return x ? bit_length-__builtin_clz(x) : 0;
@@ -21,6 +21,7 @@ class RadixHeap {
         v[i].clear();
     }
 public:
+    RadixHeap() : last(0), sz(0), cnt(0) {}
     void emplace(K x, V val){
         sz++;
         v[bsr(x^last)].emplace_back(x, val);
