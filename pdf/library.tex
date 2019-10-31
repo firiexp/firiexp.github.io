@@ -3,8 +3,12 @@
 \usepackage{listings}
 \usepackage{minted}
 \usepackage{mdframed}
+\usepackage{fancyhdr}
 \usepackage[top=15truemm, bottom=15truemm, left=15truemm, right=15truemm]{geometry}
 
+\pagestyle{fancy}
+\lhead{Sushi (The University of Electro-Communications)}
+\rhead{\thepage}
 \newcommand{\mycode}[2]{
 \subsection{#1}
 \inputminted[linenos, fontfamily=courier, breaklines, mathescape, fontsize=\footnotesize]{cpp}{../_includes/code/#2}}
