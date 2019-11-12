@@ -1,2 +1,2 @@
-/pdf/library.pdf
-/pdf/_minted-library/
+/pdf/*
+!/pdf/library.tex
