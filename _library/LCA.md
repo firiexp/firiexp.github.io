@@ -1,9 +1,9 @@
 ---
 layout: post
 title: 最近共通祖先(LCA)
-date: 2018-04-29
-category: グラフ
-tags: グラフ
+date: 2019-11-12
+category: 木
+tags: 木
 ---
 
 ## 説明

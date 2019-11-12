@@ -1,9 +1,9 @@
 ---
 layout: post
 title: 木上のdfs
-date: 2018-04-28
-category: その他
-tags: その他
+date: 2019-11-12
+category: 木
+tags: 木
 ---
 
 ## 説明
