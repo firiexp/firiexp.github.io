@@ -9,3 +9,5 @@ tags: 文字列
 ## 説明
 
 {% include a.html code="rolling_hash.cpp" %}
+
+{% include a.html code="rolling_hash_u64.cpp" %}
