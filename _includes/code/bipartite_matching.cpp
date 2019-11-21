@@ -1,11 +1,12 @@
 class Bipartite_Matching {
     vector<vector<int>> G;
-    vector<int> match, used, alive;
+    vector<int> used, alive;
     int t;
 public:
-    explicit Bipartite_Matching(int n): t(0), G(n), match(n, -1), used(n, 0), alive(n, -1){};
+    vector<int> match;
+    explicit Bipartite_Matching(int n): t(0), G(n), used(n, 0), alive(n, -1), match(n, -1) {};
 
-    void connect(int a, int b){
+    void add_edge(int a, int b){
         G[a].emplace_back(b);
         G[b].emplace_back(a);
     }
