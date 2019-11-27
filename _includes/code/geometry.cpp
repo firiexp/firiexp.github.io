@@ -69,7 +69,12 @@ bool intersect(Segment s, Segment t){
     return (ccw(s.a, s.b, t.a)*ccw(s.a, s.b, t.b) <= 0 &&
             ccw(t.a, t.b, s.a)*ccw(t.a, t.b, s.b) <= 0);
 }
- 
+
+bool intersect(Segment s, Line t){
+    int a = ccw(t.a, t.b, s.a), b = ccw(t.a, t.b, s.b);
+    return (!(a&1) || !(b&1) || a != b);
+}
+
 Point polar(double r, double t){
     return Point(r*cos(t), r*sin(t));
 }
