@@ -1,4 +1,6 @@
+
 #include <random>
+
 template< class T>
 T pow_ (T x, uint64_t n, uint64_t M){
     T u = 1;
@@ -36,6 +38,7 @@ bool miller_rabin(T m){
 }
 
 using u64 = uint64_t;
+using u128 = __uint128_t;
 
 template<typename T>
 struct ExactDiv {
@@ -71,37 +74,62 @@ vector<ExactDiv<u64>> get_prime(int n){
 const auto primes = get_prime(50000);
 
 random_device rng;
+
+struct mod64 {
+    u64 n;
+    static u64 mod, inv, r2;
+    mod64() : n(0) {}
+    mod64(u64 x) : n(init(x)) {}
+    static u64 init(u64 w) { return reduce(u128(w) * r2); }
+    static void set_mod(u64 m) {
+        mod = inv = m;
+        for (int i = 0; i < 5; ++i) inv *= 2 - inv * m;
+        r2 = -u128(m) % m;
+    }
+    static u64 reduce(u128 x) {
+        u64 y = u64(x >> 64) - u64((u128(u64(x) * inv) * mod) >> 64);
+        return ll(y) < 0 ? y + mod : y;
+    };
+    mod64& operator+=(mod64 x) { n += x.n - mod; if(ll(n) < 0) n += mod; return *this; }
+    mod64 operator+(mod64 x) const { return mod64(*this) += x; }
+    mod64& operator*=(mod64 x) { n = reduce(u128(n) * x.n);  return *this; }
+    mod64 operator*(mod64 x) const { return mod64(*this) *= x; }
+    u64 val() const { return reduce(n); }
+};
+
+u64 mod64::mod, mod64::inv, mod64::r2;
+
 template<class T>
 T pollard_rho2(T n) {
     uniform_int_distribution<T> ra(1, n-1);
+    mod64::set_mod(n);
     while(true){
-        T c = ra(rng), g = 1, r = 1, y = ra(rng),m = 1900,
-                ys = 0, q = 1, xx = 0;
-        while(c == n-2) c = ra(rng);
+        u64 c_ = ra(rng), g = 1, r = 1, m = 1900;
+        while(c_ == n-2) c_ = ra(rng);
+        mod64 y(ra(rng)), xx(0), c(c_), ys(0), q(1);
         while(g == 1){
-            xx = y;
+            xx.n = y.n;
             for (int i = 1; i <= r; ++i) {
-                y = static_cast<T>(((__uint128_t)y * y) % n);
-                y = static_cast<T>((__uint128_t)y + c) % n;
+                y *= y; y += c;
             }
             T k = 0; g = 1;
             while(k < r && g == 1){
                 for (int i = 1; i <= (m > (r-k) ? (r-k) : m); ++i) {
-                    ys = y;
-                    y = static_cast<T>(((__uint128_t)y * y) % n);
-                    y = static_cast<T>((__uint128_t)y + c) % n;
-                    q = static_cast<T>(((__uint128_t)q * (xx > y ? xx - y : y - xx)) % n);
+                    ys.n = y.n;
+                    y *= y; y += c;
+                    u64 xxx = xx.val(), yyy = y.val();
+                    q *= mod64(xxx > yyy ? xxx - yyy : yyy - xxx);
                 }
-                g = __gcd(q, n);
+                g = __gcd<ll>(q.val(), n);
                 k += m;
             }
             r *= 2;
         }
         if(g == n) g = 1;
         while (g == 1){
-            ys = static_cast<T>(((__uint128_t)ys * ys) % n);
-            ys = static_cast<T>((__uint128_t)ys + c) % n;
-            g = __gcd(xx > ys ? xx - ys : ys - xx, n);
+            ys *= ys; ys += c;
+            u64 xxx = xx.val(), yyy = ys.val();
+            g = __gcd<ll>(xxx > yyy ? xxx - yyy : yyy - xxx, n);
         }
         if (g != n && miller_rabin(g)) return g;
     }
