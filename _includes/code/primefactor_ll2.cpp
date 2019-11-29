@@ -1,8 +1,10 @@
-
 #include <random>
 
+using u64 = unsigned long long;
+using u128 = __uint128_t;
+
 template< class T>
-T pow_ (T x, uint64_t n, uint64_t M){
+T pow_ (T x, u64 n, u64 M){
     T u = 1;
     if(n > 0){
         u = pow_(x, n/2, M);
@@ -12,7 +14,7 @@ T pow_ (T x, uint64_t n, uint64_t M){
     return u;
 };
 
-bool suspect(__uint128_t a, uint64_t s, uint64_t d, uint64_t n){
+bool suspect(__uint128_t a, u64 s, u64 d, u64 n){
     __uint128_t x = pow_(a, d, n);
     if (x == 1) return true;
     for (int r = 0; r < s; ++r) {
@@ -24,11 +26,11 @@ bool suspect(__uint128_t a, uint64_t s, uint64_t d, uint64_t n){
 
 template<class T>
 bool miller_rabin(T m){
-    uint64_t n = m;
+    u64 n = m;
     if (n <= 1 || (n > 2 && n % 2 == 0)) return false;
-    uint64_t d = n - 1, s = 0;
+    u64 d = n - 1, s = 0;
     while (!(d&1)) {++s; d >>= 1;}
-    vector<uint64_t> v = {2, 325, 9375, 28178, 450775, 9780504, 1795265022};
+    vector<u64> v = {2, 325, 9375, 28178, 450775, 9780504, 1795265022};
     if(n <= 4759123141LL) v = {2, 7, 61};
     for (auto &&p : v) {
         if(p >= n) break;
@@ -37,8 +39,6 @@ bool miller_rabin(T m){
     return true;
 }
 
-using u64 = uint64_t;
-using u128 = __uint128_t;
 
 template<typename T>
 struct ExactDiv {
