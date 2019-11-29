@@ -104,7 +104,7 @@ T pollard_rho2(T n) {
     uniform_int_distribution<T> ra(1, n-1);
     mod64::set_mod(n);
     while(true){
-        u64 c_ = ra(rng), g = 1, r = 1, m = 1900;
+        u64 c_ = ra(rng), g = 1, r = 1, m = 500;
         while(c_ == n-2) c_ = ra(rng);
         mod64 y(ra(rng)), xx(0), c(c_), ys(0), q(1);
         while(g == 1){
