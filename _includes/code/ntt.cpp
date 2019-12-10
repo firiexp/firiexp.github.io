@@ -7,7 +7,7 @@ struct modint{
     u32 val;
     modint(): val(0){}
     template<typename T>
-    explicit modint(T t){t %= (T)M; if(t < 0) t += (T)M; val = t;}
+    modint(T t){t %= (T)M; if(t < 0) t += (T)M; val = t;}
 
     modint pow(ll k) const {
         modint res(1), x(val);
@@ -37,54 +37,56 @@ struct modint{
 
 using mint = modint<ntt_mod>;
 
-
-template<int M, int proot>
 class NTT {
-    vector<vector<mint>> rts, rrts;
+    static constexpr int max_base = 20, maxN = 1 << max_base; // N <= 524288 * 2
+    mint roots[maxN << 1], iroots[maxN << 1];
 public:
-    NTT() = default;
-
-    void ensure_base(int N) {
-        if(rts.size() >= N) return;
-        rts.resize(N), rrts.resize(N);
-        for(int i = 1; i < N; i <<= 1) {
-            if(!rts[i].empty()) continue;
-            mint w = mint(proot).pow((M-1) / (i << 1));
-            mint rw = w.inv();
-            rts[i].resize(i), rrts[i].resize(i);
-            rts[i][0] = 1, rrts[i][0] = 1;
-            for(int k = 1; k < i; k++) {
-                rts[i][k] = rts[i][k-1]*w;
-                rrts[i][k] = rrts[i][k-1]*rw;
+    NTT() {
+        for (int i = 0; i <= max_base; ++i) {
+            const int offset = (1 << i) - 1;
+            const mint g = mint(ntt_root).pow((ntt_mod)/(1 << i)), ginv = g.inv();
+            mint x = 1, y = 1;
+            for (int j = 0; j < 1 << i; ++j) {
+                roots[offset+j] = x;
+                x *= g;
+                iroots[offset+j] = y;
+                y *= ginv;
             }
         }
     }
-    void ntt(vector<mint> &a, int sign){
-        int n = a.size();
-        ensure_base(n);
 
-        for (int i = 0, j = 1; j < n-1; ++j) {
-            for (int k = n >> 1; k > (i ^= k); k >>= 1);
-            if(j < i) swap(a[i], a[j]);
-        }
-        for (int i = 1; i < n; i <<= 1) {
-            for (int j = 0; j < n; j += i << 1) {
-                for (int k = 0; k < i; ++k) {
-                    mint y = a[j+k+i]*(sign ? rrts[i][k] : rts[i][k]);
-                    a[j+k+i] = a[j+k]-y, a[j+k] += y;
+    void transform(vector<mint> &a, int sign){
+        const int n = a.size();
+        if(!sign){ // fft
+            for(int k = n >> 1; k >= 1; k >>= 1){
+                for (int i = 0; i < n; i += k << 1) {
+                    for (int j = 0; j < k; ++j) {
+                        const mint tmp = a[i+j]-a[i+j+k];
+                        a[i+j] += a[i+j+k];
+                        a[i+j+k] = tmp*roots[(k << 1)-1+j];
+                    }
                 }
             }
-        }
-        if(sign) {
-            mint temp = mint(n).inv();
-            for (int i = 0; i < n; ++i) a[i] *= temp;
+        }else { // ifft
+            for(int k = 1; k <= (n >> 1); k <<= 1){
+                for (int i = 0; i < n; i += k << 1) {
+                    for (int j = 0; j < k; ++j) {
+                        a[i+j+k] *= iroots[(k << 1)-1+j];
+                        const mint tmp = a[i+j]-a[i+j+k];
+                        a[i+j] += a[i+j+k];
+                        a[i+j+k] = tmp;
+                    }
+                }
+            }
+            const mint x = mint(n).inv();
+            for (auto &&i : a) i *= x;
         }
     }
 };
 
 
 
-NTT<ntt_mod, ntt_root> ntt;
+NTT ntt;
 
 struct poly {
     vector<mint> v;
@@ -143,11 +145,11 @@ struct poly {
         int N = size()+a.size()-1;
         int sz = 1;
         while(sz < N) sz <<= 1;
-        ntt.ensure_base(sz);
         this->v.resize(sz); a.v.resize(sz);
-        ntt.ntt(this->v, 0); ntt.ntt(a.v, 0);
+        ntt.transform(this->v, 0); ntt.transform(a.v, 0);
         for(int i = 0; i < sz; ++i) this->v[i] *= a.v[i];
-        ntt.ntt(this->v, 1);
+        ntt.transform(this->v, 1);
+        this->v.resize(N);
         return *this;
     }
 
