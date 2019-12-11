@@ -1,4 +1,3 @@
-
 class HeavyLightDecomposition {
     void dfs_sz(int v){
         for (auto &&u : G[v]) {
