@@ -120,6 +120,7 @@ struct poly {
     vector<int> v;
     poly() = default;
     explicit poly(vector<int> vv) : v(std::move(vv)) {};
+    explicit poly(size_t n) : v(n) {};
     int size() const {return (int)v.size(); }
     poly cut(int len){
         if(len < v.size()) v.resize(static_cast<unsigned long>(len));
@@ -154,7 +155,7 @@ struct poly {
     poly operator+(const poly &a) const { return poly(*this) += a; }
     poly operator-(const poly &a) const { return poly(*this) -= a; }
     poly operator*(const poly &a) const { return poly(*this) *= a; }
-    poly operator*(const poly &a) const { return poly(*this) /= a; }
+    poly operator/(const poly &a) const { return poly(*this) /= a; }
 
     poly& operator+=(const poly &a) {
         this->v.resize(max(size(), a.size()));
