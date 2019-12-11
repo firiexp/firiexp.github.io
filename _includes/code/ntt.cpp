@@ -84,9 +84,7 @@ public:
     }
 };
 
-
-
-NTT ntt;
+NTT transformer;
 
 struct poly {
     vector<mint> v;
@@ -146,9 +144,9 @@ struct poly {
         int sz = 1;
         while(sz < N) sz <<= 1;
         this->v.resize(sz); a.v.resize(sz);
-        ntt.transform(this->v, 0); ntt.transform(a.v, 0);
+        transformer.transform(this->v, 0); transformer.transform(a.v, 0);
         for(int i = 0; i < sz; ++i) this->v[i] *= a.v[i];
-        ntt.transform(this->v, 1);
+        transformer.transform(this->v, 1);
         this->v.resize(N);
         return *this;
     }
