@@ -1,22 +1,38 @@
-template<typename T>
-T extgcd(T a, T b, T &x ,T &y){
-    for (T u = y = 1, v = x = 0; a; ) {
-        ll q = b/a;
-        swap(x -= q*u, u);
-        swap(y -= q*v, v);
-        swap(b -= q*a, a);
+template<u32 M = 1000000007>
+struct modint{
+    u32 val;
+    modint(): val(0){}
+    template<typename T>
+    modint(T t){t %= (T)M; if(t < 0) t += (T)M; val = t;}
+
+    modint pow(ll k) const {
+        modint res(1), x(val);
+        while(k){
+            if(k&1) res *= x;
+            x *= x;
+            k >>= 1;
+        }
+        return res;
     }
-    return b;
-}
+    template<typename T>
+    modint& operator=(T t){t %= (T)M; if(t < 0) t += (T)M; val = t; return *this; }
+    modint inv() const {return pow(M-2);}
+    modint& operator+=(modint a){ val += a.val; if(val >= M) val -= M; return *this;}
+    modint& operator-=(modint a){ if(val < a.val) val += M-a.val; else val -= a.val; return *this;}
+    modint& operator*=(modint a){ val = (u64)val*a.val%M; return *this;}
+    modint& operator/=(modint a){ return (*this) *= a.inv();}
+    modint operator+(modint a) const {return modint(val) +=a;}
+    modint operator-(modint a) const {return modint(val) -=a;}
+    modint operator*(modint a) const {return modint(val) *=a;}
+    modint operator/(modint a) const {return modint(val) /=a;}
+    modint operator-(){ return modint(M-val);}
+    bool operator==(const modint a) const {return val == a.val;}
+    bool operator!=(const modint a) const {return val != a.val;}
+    bool operator<(const modint a) const {return val < a.val;}
+};
 
-template<typename T>
-T mod_inv(T x, T m){
-    T s, t;
-    extgcd(x, m, s, t);
-    return (m+s)% m;
-}
+using mint = modint<>;
 
-#include <cmath>
 namespace FFT {
     const int max_base = 19, maxN = 1 << max_base; // N <= 2e5
     const double PI = acos(-1);
@@ -71,7 +87,7 @@ namespace FFT {
     num a[maxN], b[maxN], f[maxN], g[maxN];
     ll A[maxN], B[maxN], C[maxN];
 
-    void multi_mod(int m){
+    void multi_mod(){
         for (int i = 0; i < N; ++i) {
             a[i] = num( A[i] & ((1LL << 15)-1),  A[i] >> 15);
         }
@@ -95,7 +111,7 @@ namespace FFT {
             ll aa = f[i].x + 0.5;
             ll bb = g[i].x + 0.5;
             ll cc = f[i].y + 0.5;
-            C[i] = (aa + bb % m * (1LL << 15) + cc% m *(1LL << 30)) % m;
+            C[i] = (aa + bb % MOD * (1LL << 15) + cc % MOD *(1LL << 30)) % MOD;
         }
     }
 
@@ -109,81 +125,67 @@ namespace FFT {
         prepare_rev();
     }
 
-    void multi_mod(int n1, int n2, int m){
+    void multi_mod(int n1, int n2){
         prepare_AB(n1, n2);
-        multi_mod(m);
+        multi_mod();
     }
 }
 
-
 struct poly {
-    vector<int> v;
+    vector<mint> v;
     poly() = default;
-    explicit poly(vector<int> vv) : v(std::move(vv)) {};
-    explicit poly(size_t n) : v(n) {};
+    explicit poly(int n) : v(n) {};
+    explicit poly(vector<mint> vv) : v(std::move(vv)) {};
     int size() const {return (int)v.size(); }
     poly cut(int len){
         if(len < v.size()) v.resize(static_cast<unsigned long>(len));
         return *this;
     }
-    inline int& operator[] (int i) {return v[i]; }
-   
+    inline mint& operator[] (int i) {return v[i]; }
+    poly& operator+=(const poly &a) {
+        this->v.resize(max(size(), a.size()));
+        for (int i = 0; i < a.size(); ++i) this->v[i] += a.v[i];
+        return *this;
+    }
+    poly& operator-=(const poly &a) {
+        this->v.resize(max(size(), a.size()));
+        for (int i = 0; i < a.size(); ++i) this->v[i] -= a.v[i];
+        return *this;
+    }
+
+    poly& operator*=(poly a) {
+        for (int i = 0; i < size(); ++i) FFT::A[i] = this->v[i].val;
+        for (int i = 0; i < a.size(); ++i) FFT::B[i] = a.v[i].val;
+        FFT::multi_mod(size(), a.size());
+        this->v.resize(size() + a.size()-1);
+        for (int i = 0; i < size(); ++i) this->v[i] = FFT::C[i];
+        return *this;
+    }
+    poly& operator/=(const poly &a){ return (*this *= a.inv()); }
+    poly operator+(const poly &a) const { return poly(*this) += a; }
+    poly operator-(const poly &a) const { return poly(*this) -= a; }
+    poly operator*(const poly &a) const { return poly(*this) *= a; }
 
     poly inv() const {
         int n = size();
-        vector<int> rr(1, mod_inv(this->v[0], MOD));
-        poly r(rr);
-        for (int k = 2; k <= n; k <<= 1) {
-            vector<int> u(k);
-            for (int i = 0; i < k; ++i) {
-                u[i] = this->v[i];
+        poly r(1);
+        r[0] = (this->v[0]).inv();
+        int k = 1;
+        while(k < n){
+            k *= 2;
+            poly ff(k);
+            for (int i = 0; i < min(k, n); ++i) {
+                ff[i] = this->v[i];
             }
-            poly ff(u);
-            poly nr = (r*r);
-            nr = nr*ff;
-            nr.cut(k);
+            poly nr = (r*r*ff).cut(k);
             for (int i = 0; i < k/2; ++i) {
-                nr[i] = (2*r[i]-nr[i]+MOD)%MOD;
-                nr[i+k/2] = (MOD-nr[i+k/2])%MOD;
+                nr[i] = (r[i]+r[i]-nr[i]);
+                nr[i+k/2] = -nr[i+k/2];
             }
             r = nr;
         }
         r.v.resize(n);
         return r;
     }
-
-    poly operator+(const poly &a) const { return poly(*this) += a; }
-    poly operator-(const poly &a) const { return poly(*this) -= a; }
-    poly operator*(const poly &a) const { return poly(*this) *= a; }
-    poly operator/(const poly &a) const { return poly(*this) /= a; }
-
-    poly& operator+=(const poly &a) {
-        this->v.resize(max(size(), a.size()));
-        for (int i = 0; i < a.size(); ++i) {
-            (this->v[i] += a.v[i]);
-            if(this->v[i] > MOD) this->v[i] -= MOD;
-        }
-        return *this;
-    }
-    poly& operator-=(const poly &a) {
-        this->v.resize(max(size(), a.size()));
-        for (int i = 0; i < a.size(); ++i) {
-            (this->v[i] += MOD-a.v[i]);
-            if(this->v[i] > MOD) this->v[i] -= MOD;
-        }
-        return *this;
-    }
-
-    poly& operator*=(const poly &a) {
-        for (int i = 0; i < size(); ++i) FFT::A[i] = this->v[i];
-        for (int i = 0; i < a.size(); ++i) FFT::B[i] = a.v[i];
-        FFT::multi_mod(size(), a.size(), MOD);
-        this->v.resize(size() + a.size()-1);
-        for (int i = 0; i < size(); ++i) this->v[i] = FFT::C[i];
-        return *this;
-    }
-    
-    poly& operator/=(const poly &a){
-        return (*this *= a.inv()); 
-    }
 };
+
