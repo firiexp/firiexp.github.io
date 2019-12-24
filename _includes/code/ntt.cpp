@@ -84,7 +84,7 @@ public:
     }
 };
 
-NTT transformer;
+NTT ntt;
 
 struct poly {
     vector<mint> v;
@@ -97,6 +97,29 @@ struct poly {
         return *this;
     }
     inline mint& operator[] (int i) {return v[i]; }
+    poly& operator+=(const poly &a) {
+        this->v.resize(max(size(), a.size()));
+        for (int i = 0; i < a.size(); ++i) this->v[i] += a.v[i];
+        return *this;
+    }
+    poly& operator-=(const poly &a) {
+        this->v.resize(max(size(), a.size()));
+        for (int i = 0; i < a.size(); ++i) this->v[i] -= a.v[i];
+        return *this;
+    }
+
+    poly& operator*=(poly a) {
+        int N = size()+a.size()-1;
+        int sz = 1;
+        while(sz < N) sz <<= 1;
+        this->v.resize(sz); a.v.resize(sz);
+        ntt.transform(this->v, 0); ntt.transform(a.v, 0);
+        for(int i = 0; i < sz; ++i) this->v[i] *= a.v[i];
+        ntt.transform(this->v, 1);
+        this->v.resize(N);
+        return *this;
+    }
+    poly& operator/=(const poly &a){ return (*this *= a.inv()); }
     poly operator+(const poly &a) const { return poly(*this) += a; }
     poly operator-(const poly &a) const { return poly(*this) -= a; }
     poly operator*(const poly &a) const { return poly(*this) *= a; }
@@ -112,8 +135,7 @@ struct poly {
             for (int i = 0; i < min(k, n); ++i) {
                 ff[i] = this->v[i];
             }
-            poly nr = r*r*ff;
-            nr.cut(k);
+            poly nr = (r*r*ff).cut(k);
             for (int i = 0; i < k/2; ++i) {
                 nr[i] = (r[i]+r[i]-nr[i]);
                 nr[i+k/2] = -nr[i+k/2];
@@ -122,36 +144,5 @@ struct poly {
         }
         r.v.resize(n);
         return r;
-    }
-
-    poly& operator+=(const poly &a) {
-        this->v.resize(max(size(), a.size()));
-        for (int i = 0; i < a.size(); ++i) {
-            (this->v[i] += a.v[i]);
-        }
-        return *this;
-    }
-    poly& operator-=(const poly &a) {
-        this->v.resize(max(size(), a.size()));
-        for (int i = 0; i < a.size(); ++i) {
-            (this->v[i] -= a.v[i]);
-        }
-        return *this;
-    }
-
-    poly& operator*=(poly a) {
-        int N = size()+a.size()-1;
-        int sz = 1;
-        while(sz < N) sz <<= 1;
-        this->v.resize(sz); a.v.resize(sz);
-        transformer.transform(this->v, 0); transformer.transform(a.v, 0);
-        for(int i = 0; i < sz; ++i) this->v[i] *= a.v[i];
-        transformer.transform(this->v, 1);
-        this->v.resize(N);
-        return *this;
-    }
-
-    poly& operator/=(const poly &a){
-        return (*this *= a.inv());
     }
 };
