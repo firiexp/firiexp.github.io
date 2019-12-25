@@ -1,22 +1,26 @@
-template<class T, size_t SIZE>
+template<class H, size_t SIZE>
 struct SquareMatrix {
+    using T = typename H::T;
     using ar = array<T, SIZE>;
     using mat = array<ar, SIZE>;
     mat A;
     SquareMatrix() = default;
-    static SquareMatrix I(T e){
-        SquareMatrix X;
+    static SquareMatrix I(){
+        SquareMatrix X{};
         for (int i = 0; i < SIZE; ++i) {
-            X[i][i] = e;
+            for (int j = 0; j < SIZE; ++j) {
+                if(i == j) X[i][j] = H::one();
+                else X[i][j] = H::zero();
+            }
         }
         return X;
     }
 
     friend ar operator*=(ar &x, const SquareMatrix &Y) {
-        ar ans;
+        ar ans{};
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
-                 ans[j] += x[i]*Y[i][j];
+                 H::add(ans[j], H::mul(x[i], Y[i][j]));
             }
         }
         x.swap(ans);
@@ -29,7 +33,7 @@ struct SquareMatrix {
     SquareMatrix &operator+= (const SquareMatrix &B){
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
-                (*this)[i][j] += B[i][j];
+                H::add((*this)[i][j], B[i][j]);
             }
         }
         return (*this);
@@ -38,18 +42,18 @@ struct SquareMatrix {
     SquareMatrix &operator-= (const SquareMatrix &B){
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
-                (*this)[i][j] -= B[i][j];
+                H::add((*this)[i][j], -B[i][j]);
             }
         }
         return (*this);
     }
 
     SquareMatrix &operator*=(const SquareMatrix &B) {
-        SquareMatrix C;
+        SquareMatrix C{};
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
                 for (int k = 0; k < SIZE; ++k) {
-                    C[i][j] += ((*this)[i][k] * B[k][j]);
+                    H::add(C[i][j],  H::mul((*this)[i][k], B[k][j]));
                 }
             }
         }
@@ -58,7 +62,7 @@ struct SquareMatrix {
     }
 
     SquareMatrix pow(ll n) const {
-        SquareMatrix a = (*this), res = I(T(1));
+        SquareMatrix a = (*this), res = I();
         while(n > 0){
             if(n & 1) res *= a;
             a *= a;
@@ -71,5 +75,13 @@ struct SquareMatrix {
     SquareMatrix operator*(const SquareMatrix &B) const {return SquareMatrix(*this) *= B;}
 };
 
-using ar = array<mint, 3>;
-using mat = SquareMatrix<mint, 3>;
+struct SemiRing {
+    using T = double;
+    static T mul(T x, T y){ return x * y; }
+    static void add(T &x, T y){ x += y; }
+    static T one(){ return 1.0; }
+    static T zero(){ return 0.0; }
+};
+
+using ar = array<SemiRing::T, 64>;
+using mat = SquareMatrix<SemiRing, 64>;
