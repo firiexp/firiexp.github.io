@@ -51,8 +51,8 @@ struct SquareMatrix {
     SquareMatrix &operator*=(const SquareMatrix &B) {
         SquareMatrix C{};
         for (int i = 0; i < SIZE; ++i) {
-            for (int j = 0; j < SIZE; ++j) {
-                for (int k = 0; k < SIZE; ++k) {
+            for (int k = 0; k < SIZE; ++k) {
+                for (int j = 0; j < SIZE; ++j) {
                     H::add(C[i][j],  H::mul((*this)[i][k], B[k][j]));
                 }
             }
@@ -77,10 +77,10 @@ struct SquareMatrix {
 
 struct SemiRing {
     using T = double;
-    static T mul(T x, T y){ return x * y; }
-    static void add(T &x, T y){ x += y; }
-    static T one(){ return 1.0; }
-    static T zero(){ return 0.0; }
+    static inline T mul(T x, T y){ return x * y; }
+    static inline void add(T &x, T y){ x += y; }
+    static inline T one(){ return 1.0; }
+    static inline T zero(){ return 0.0; }
 };
 
 using ar = array<SemiRing::T, 64>;
