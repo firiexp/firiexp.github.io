@@ -1,8 +1,12 @@
 template<class T>
 class BIT {
     vector<T> bit;
+    int m;
 public:
-    BIT(int n): bit(vector<T>(n+1, 0)){}
+    BIT(int n): bit(vector<T>(n+1, 0)){
+        m = 1;
+        while(m < n) m <<= 1;
+    }
 
     T sum(int k){
         T ret = 0;
@@ -12,5 +16,13 @@ public:
 
     void add(int k, T x){
         for (++k; k < bit.size(); k  += (k & -k)) bit[k] += x;
+    }
+    
+    T lower_bound(T x){
+        int i = 0;
+        for (int j = m; j > 0; j >>= 1) {
+            if(i+j < bit.size() && bit[i+j] < x) x -= bit[i += j];
+        }
+        return i;
     }
 };
