@@ -8,4 +8,4 @@ tags: テンプレート
 
 ## 説明
 テンプレート
-{% include a.html code="template.cpp" %}
+{% include a.html code="template.txt" %}
